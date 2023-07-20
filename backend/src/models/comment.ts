@@ -1,15 +1,16 @@
-import { Schema, model, Document } from 'mongoose';
+import mongoose, { Schema, model, Document, Types } from 'mongoose';
 
 interface Comment extends Document {
   content: string;
-  author: string;
-  blogPost: string;
+  author: Types.ObjectId;
+  blogPost: Types.ObjectId;
 }
 
 const commentSchema = new Schema<Comment>({
   content: { type: String, required: true },
-  author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  blogPost: { type: Schema.Types.ObjectId, ref: 'BlogPost', required: true },
-});
+  author: { type: Schema.Types.ObjectId, ref: 'User' },
+  blogPost: { type: Schema.Types.ObjectId, ref: 'BlogPost'},
+}, {timestamps: true});
 
-export default model<Comment>('Comment', commentSchema);
+const CommentModel = mongoose.model("Comment", commentSchema);
+export { CommentModel };
